@@ -18,6 +18,7 @@ from .encodec import CompressionModel
 from .lm import LMModel
 from .builders import get_debug_compression_model, get_debug_lm_model
 from .loaders import load_compression_model, load_lm_model, HF_MODEL_CHECKPOINTS_MAP
+from .loaders import load_compression_model_local, load_lm_model_local
 from ..data.audio_utils import convert_audio
 from ..modules.conditioners import ConditioningAttributes, WavCondition
 from ..utils.autocast import TorchAutocast
