@@ -95,8 +95,16 @@ class MusicGen:
             )
 
         cache_dir = os.environ.get('MUSICGEN_ROOT', None)
-        compression_model = load_compression_model(name, device=device, cache_dir=cache_dir)
-        lm = load_lm_model(name, device=device, cache_dir=cache_dir)
+        models_dir = os.environ.get('MODELS_ROOT', None)
+        if(models_dir != None):
+            try:
+                compression_model = load_compression_model_local(name, device=device, models_path=models_dir)
+            except:
+                compression_model = load_compression_model(name, device=device, cache_dir=cache_dir)
+            try:
+                lm = load_lm_model_local(name, device=device, models_path=models_dir)
+            except:
+                lm = load_lm_model(name, device=device, cache_dir=cache_dir)
         if name == 'melody':
             lm.condition_provider.conditioners['self_wav'].match_len_on_eval = True
 

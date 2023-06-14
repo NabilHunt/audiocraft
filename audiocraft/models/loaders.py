@@ -88,3 +88,30 @@ def load_lm_model(file_or_url_or_id: tp.Union[Path, str], device='cpu', cache_di
     model.eval()
     model.cfg = cfg
     return model
+
+
+def load_compression_model_local(file_or_url_or_id: tp.Union[Path, str], device='cpu', models_path: tp.Union[Path, str], cache_dir: tp.Optional[str] = None):
+    path_compression_model = os.path.join(models_path, file_or_url_or_id, "compression_state_dict.bin")
+    pkg = _get_state_dict(path_compression_model)
+    cfg = OmegaConf.create(pkg['xp.cfg'])
+    cfg.device = str(device)
+    model = builders.get_compression_model(cfg)
+    model.load_state_dict(pkg['best_state'])
+    model.eval()
+    return model
+
+
+def load_lm_model_local(file_or_url_or_id: tp.Union[Path, str], device='cpu', models_path: tp.Union[Path, str], cache_dir: tp.Optional[str] = None):
+    path_lm_model = os.path.join(models_path, file_or_url_or_id, "state_dict.bin")
+    pkg = _get_state_dict(path_lm_model)
+    cfg = OmegaConf.create(pkg['xp.cfg'])
+    cfg.device = str(device)
+    if cfg.device == 'cpu':
+        cfg.dtype = 'float32'
+    else:
+        cfg.dtype = 'float16'
+    model = builders.get_lm_model(cfg)
+    model.load_state_dict(pkg['best_state'])
+    model.eval()
+    model.cfg = cfg
+    return model
