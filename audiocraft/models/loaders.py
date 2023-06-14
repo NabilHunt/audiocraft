@@ -90,7 +90,7 @@ def load_lm_model(file_or_url_or_id: tp.Union[Path, str], device='cpu', cache_di
     return model
 
 
-def load_compression_model_local(file_or_url_or_id: tp.Union[Path, str], device='cpu', models_path: tp.Union[Path, str], cache_dir: tp.Optional[str] = None):
+def load_compression_model_local(file_or_url_or_id: tp.Union[Path, str], device='cpu', models_path: tp.Union[Path, str]=None, cache_dir: tp.Optional[str] = None):
     path_compression_model = os.path.join(models_path, file_or_url_or_id, "compression_state_dict.bin")
     pkg = _get_state_dict(path_compression_model)
     cfg = OmegaConf.create(pkg['xp.cfg'])
@@ -101,7 +101,7 @@ def load_compression_model_local(file_or_url_or_id: tp.Union[Path, str], device=
     return model
 
 
-def load_lm_model_local(file_or_url_or_id: tp.Union[Path, str], device='cpu', models_path: tp.Union[Path, str], cache_dir: tp.Optional[str] = None):
+def load_lm_model_local(file_or_url_or_id: tp.Union[Path, str], device='cpu', models_path: tp.Union[Path, str]=None, cache_dir: tp.Optional[str] = None):
     path_lm_model = os.path.join(models_path, file_or_url_or_id, "state_dict.bin")
     pkg = _get_state_dict(path_lm_model)
     cfg = OmegaConf.create(pkg['xp.cfg'])
